@@ -1,0 +1,104 @@
+@import "tailwindcss";
+
+@variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+}
+
+:root {
+  /* Light Mode */
+  --background: #f0f4f8;
+  --foreground: #0a192f;
+  
+  --primary: #0056b3;
+  --primary-foreground: #ffffff;
+  
+  --secondary: #7928ca;
+  --secondary-foreground: #ffffff;
+  
+  --accent: #0070f3;
+  --accent-foreground: #ffffff;
+  
+  --card: #ffffff;
+  --card-foreground: #0a192f;
+  
+  --muted: #e2e8f0;
+  --muted-foreground: #64748b;
+  
+  --border: #cbd5e1;
+  --input: #cbd5e1;
+  --ring: #0056b3;
+}
+
+.dark {
+  /* Dark Mode (Default) */
+  --background: #0a192f;
+  --foreground: #ccd6f6;
+  
+  --primary: #64ffda;
+  --primary-foreground: #0a192f;
+  
+  --secondary: #bd34fe;
+  --secondary-foreground: #ffffff;
+  
+  --accent: #23ff45;
+  --accent-foreground: #0a192f;
+  
+  --card: #112240;
+  --card-foreground: #ccd6f6;
+  
+  --muted: #1e293b;
+  --muted-foreground: #8892b0;
+  
+  --border: #1e293b;
+  --input: #1e293b;
+  --ring: #64ffda;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--muted-foreground);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
