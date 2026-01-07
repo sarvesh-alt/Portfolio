@@ -1,28 +1,28 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Github, ExternalLink, Server, GitBranch } from "lucide-react"
+import { Github, ExternalLink, Server, GitBranch, Globe } from "lucide-react"
 import Link from "next/link"
 
 const projects = [
   {
-    title: "Scalable Web Application on AWS",
-    description: "Designed and deployed a highly available web application using AWS EC2, RDS, and Auto Scaling groups. Implemented load balancing to handle traffic spikes and ensured data persistence with automated backups.",
-    tags: ["AWS EC2", "RDS", "Auto Scaling", "Load Balancing"],
+    title: "DC Streaming Project - Capstone",
+    description: "Designed and deployed a production-grade Netflix Clone on AWS. Integrated CI/CD with Jenkins, security scanning with SonarQube/Trivy, and GitOps deployment on EKS using ArgoCD. Implemented comprehensive monitoring with Prometheus and Grafana.",
+    tags: ["AWS EKS", "Jenkins", "ArgoCD", "DevSecOps", "Prometheus"],
     icon: Server,
     links: {
-      github: "#", // Placeholder
-      demo: "#",   // Placeholder
+      github: "https://github.com/sarvesh-alt",
+      demo: "https://github.com/PriyankaaChoudhary/dc-streaming-project",
     },
   },
   {
-    title: "CI/CD Pipeline with GitHub Actions",
-    description: "Built a robust CI/CD pipeline using GitHub Actions with OpenID Connect authentication for secure deployments. Automated testing, building, and deployment processes to reduce manual errors and accelerate release cycles.",
-    tags: ["GitHub Actions", "CI/CD", "OIDC", "DevOps"],
-    icon: GitBranch,
+    title: "Explora - Travel Booking Application",
+    description: "Developed a full-stack travel booking platform allowing users to explore destinations and book accommodations. Features include secure authentication, dynamic search filtering, and a responsive UI for seamless user experience.",
+    tags: ["React", "Node.js", "MongoDB", "Express", "Full Stack"],
+    icon: Globe,
     links: {
-      github: "#", // Placeholder
-      demo: "#",   // Placeholder
+      github: "https://github.com/sarvesh-alt",
+      demo: "https://github.com/sarvesh-alt/Explora",
     },
   },
 ]
