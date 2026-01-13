@@ -11,15 +11,23 @@ import { Contact } from "@/components/Contact"
 import { LoadingScreen } from "@/components/LoadingScreen"
 import { StarField } from "@/components/StarField"
 
+// Global state to track if loading screen has been shown in this session
+let hasLoaded = false
+
 export default function Home() {
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(!hasLoaded)
+
+  const handleLoadingComplete = () => {
+    hasLoaded = true
+    setIsLoading(false)
+  }
 
   return (
     <div className="flex flex-col w-full">
       <StarField />
       <AnimatePresence mode="wait">
         {isLoading && (
-          <LoadingScreen onComplete={() => setIsLoading(false)} />
+          <LoadingScreen onComplete={handleLoadingComplete} />
         )}
       </AnimatePresence>
 
