@@ -5,6 +5,7 @@ import Link from "next/link"
 import { ShieldCheck, Home, User, Code, Briefcase, Folder, Mail, Heart } from "lucide-react"
 import { ThemeToggle } from "./theme-toggle"
 import { cn } from "@/lib/utils"
+import { motion } from "framer-motion"
 
 const navItems = [
   { name: "Home", href: "/#home", icon: Home },
@@ -18,6 +19,7 @@ const navItems = [
 
 export function Navbar() {
   const [scrolled, setScrolled] = React.useState(false)
+  const [hoveredNav, setHoveredNav] = React.useState<string | null>(null)
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -73,20 +75,44 @@ export function Navbar() {
 
       {/* Mobile Bottom Navigation */}
       <div className="fixed bottom-6 inset-x-0 z-50 md:hidden flex justify-center pointer-events-none">
-        <div className="flex items-center gap-1 p-1.5 px-3 bg-background/20 backdrop-blur-2xl backdrop-saturate-150 border border-foreground/10 rounded-full shadow-2xl pointer-events-auto ring-1 ring-white/10">
-            {navItems.map((item) => {
-              const Icon = item.icon
-              return (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className="p-2.5 rounded-full text-foreground/70 hover:text-primary hover:scale-110 active:scale-95 transition-all duration-200 ease-out"
-                  aria-label={item.name}
-                >
-                  <Icon className="h-5 w-5" />
-                </Link>
-              )
-            })}
+        <div 
+            className="flex items-center gap-0 p-2 bg-background/20 backdrop-blur-2xl backdrop-saturate-150 border border-foreground/10 rounded-full shadow-2xl pointer-events-auto ring-1 ring-white/10"
+            onMouseLeave={() => setHoveredNav(null)}
+            onTouchMove={(e) => {
+               const touch = e.touches[0]
+               const element = document.elementFromPoint(touch.clientX, touch.clientY)
+               const link = element?.closest("a")
+               const name = link?.getAttribute("aria-label")
+               setHoveredNav(name || null)
+            }}
+            onTouchEnd={(e) => {
+              setHoveredNav(null)
+              const touch = e.changedTouches[0]
+              const element = document.elementFromPoint(touch.clientX, touch.clientY)
+              const link = element?.closest("a")
+               if (link instanceof HTMLElement) {
+                  link.click()
+               }
+            }}
+        >
+          {navItems.map((item) => (
+            <Link
+              key={item.name}
+              href={item.href}
+              aria-label={item.name}
+              className="relative w-12 h-12 flex items-center justify-center rounded-full transition-colors z-10"
+              onMouseEnter={() => setHoveredNav(item.name)}
+            >
+                {hoveredNav === item.name && (
+                    <motion.div
+                        layoutId="bubble"
+                        className="absolute inset-0 bg-white/20 rounded-full -z-10"
+                        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                    />
+                )}
+               <item.icon className={cn("h-6 w-6 transition-colors duration-200", hoveredNav === item.name ? "text-primary" : "text-foreground/70")} />
+            </Link>
+          ))}
         </div>
       </div>
     </>
