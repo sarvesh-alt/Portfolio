@@ -73,14 +73,14 @@ export function Navbar() {
 
       {/* Mobile Bottom Navigation */}
       <div className="fixed bottom-6 inset-x-0 z-50 md:hidden flex justify-center pointer-events-none">
-        <div className="flex items-center gap-2 p-2 px-4 bg-background/80 backdrop-blur-md border border-border rounded-full shadow-lg pointer-events-auto">
+        <div className="flex items-center gap-1 p-1.5 px-3 bg-background/20 backdrop-blur-2xl backdrop-saturate-150 border border-foreground/10 rounded-full shadow-2xl pointer-events-auto ring-1 ring-white/10">
             {navItems.map((item) => {
               const Icon = item.icon
               return (
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="p-2 rounded-full text-foreground/80 hover:text-primary hover:bg-muted transition-colors"
+                  className="p-2.5 rounded-full text-foreground/70 hover:text-primary hover:scale-110 active:scale-95 transition-all duration-200 ease-out"
                   aria-label={item.name}
                 >
                   <Icon className="h-5 w-5" />
