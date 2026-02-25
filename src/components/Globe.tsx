@@ -95,10 +95,13 @@ export function Globe({ mode = "bg" }: { mode?: "bg" | "card" }) {
   const realDataRef  = useRef(false)
   const rafRef       = useRef<number>(0)
   const mapRef       = useRef<HTMLImageElement | null>(null)
+  const modeRef      = useRef(mode)  // track mode for render loop
   const [count, setCount]       = useState(0)
   const [imgReady, setImgReady] = useState(false)
   const { resolvedTheme } = useTheme()
   const isDark = resolvedTheme !== "light"
+
+  useEffect(() => { modeRef.current = mode }, [mode])
 
   // ── Load map image ────────────────────────────────────────────────────────
   useEffect(() => {
@@ -192,54 +195,37 @@ export function Globe({ mode = "bg" }: { mode?: "bg" | "card" }) {
       if (!w || !h) { rafRef.current = requestAnimationFrame(frame); return }
 
       const isMobile = w < 640
+      const isCardMode = modeRef.current === "card"
 
       // ── Background ────────────────────────────────────────────────────────
       ctx.clearRect(0, 0, w, h)
 
-      if (isDark) {
-        // Deep navy base
-        ctx.fillStyle = "#061220"
-        ctx.fillRect(0, 0, w, h)
+      // Skip solid backgrounds entirely - let stars show through in both modes
 
-        if (mapRef.current) {
+      // Draw map image
+      if (mapRef.current) {
+        if (isDark) {
           // Draw map bright, then colour it
           ctx.save()
-          ctx.globalAlpha = 0.55
+          ctx.globalAlpha = isCardMode ? 0.5 : 0.6
           ctx.drawImage(mapRef.current, 0, 0, w, h)
           ctx.restore()
 
           // Cyan/teal screen blend to bring out the map in dark mode
           ctx.save()
           ctx.globalCompositeOperation = "screen"
-          ctx.globalAlpha = 0.45
+          ctx.globalAlpha = isCardMode ? 0.35 : 0.5
           ctx.fillStyle = "#00668a"
           ctx.fillRect(0, 0, w, h)
           ctx.restore()
         } else {
-          // Subtle grid fallback
-          ctx.strokeStyle = "rgba(0,180,255,0.1)"
-          ctx.lineWidth = 0.5
-          for (let lng = -180; lng <= 180; lng += 30) {
-            const x = ((lng + 180) / 360) * w
-            ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke()
-          }
-          for (let lat = -90; lat <= 90; lat += 30) {
-            const y = ((90 - lat) / 180) * h
-            ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke()
-          }
-        }
-      } else {
-        // Light blue-grey ocean base
-        ctx.fillStyle = "#b8d8ee"
-        ctx.fillRect(0, 0, w, h)
-        if (mapRef.current) {
           ctx.save()
-          ctx.globalAlpha = 0.9
+          ctx.globalAlpha = isCardMode ? 0.65 : 0.85
           ctx.drawImage(mapRef.current, 0, 0, w, h)
           ctx.restore()
           // Slight cool-blue tint over the light map
           ctx.save()
-          ctx.globalAlpha = 0.12
+          ctx.globalAlpha = isCardMode ? 0.1 : 0.15
           ctx.fillStyle = "#0066aa"
           ctx.fillRect(0, 0, w, h)
           ctx.restore()
@@ -402,8 +388,19 @@ export function Globe({ mode = "bg" }: { mode?: "bg" | "card" }) {
   // ── Render ────────────────────────────────────────────────────────────────
   if (mode === "card") {
     return (
-      <div ref={containerRef} className="relative w-full rounded-xl overflow-hidden border border-cyan-800/30 dark:border-cyan-700/30 shadow-lg" style={{ height: 220 }}>
+      <div ref={containerRef} className="relative w-full overflow-hidden" style={{ height: 220 }}>
         <canvas ref={canvasRef} className="w-full h-full" />
+        {/* Edge fades to blend seamlessly */}
+        <div className="absolute inset-0 pointer-events-none">
+          {/* Top fade */}
+          <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-background via-background/60 to-transparent" />
+          {/* Bottom fade */}
+          <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-background via-background/80 to-transparent" />
+          {/* Left fade */}
+          <div className="absolute top-0 bottom-0 left-0 w-12 bg-gradient-to-r from-background via-background/60 to-transparent" />
+          {/* Right fade */}
+          <div className="absolute top-0 bottom-0 right-0 w-12 bg-gradient-to-l from-background via-background/60 to-transparent" />
+        </div>
         <Badge count={count} />
         <Legend />
       </div>
