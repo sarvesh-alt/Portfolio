@@ -46,12 +46,19 @@ export function Hero() {
   }, [text, isDeleting, loopNum])
 
   return (
-    <section id="home" className="min-h-screen flex items-center justify-center pt-16 relative overflow-hidden">
-      {/* Background Elements */}
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/10 via-background to-background" />
-      
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-        {/* Text Content */}
+    <section id="home" className="min-h-screen flex flex-col lg:flex-row items-stretch pt-16 relative overflow-hidden">
+
+      {/* ── Desktop: Globe fills entire section background ── */}
+      <div className="hidden lg:block absolute inset-0">
+        <Globe mode="bg" />
+      </div>
+
+      {/* Desktop gradient: left column opaque, right shows map */}
+      <div className="hidden lg:block absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/10 pointer-events-none z-10" />
+
+      {/* ── Content ───────────────────────────────────────── */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-20 flex flex-col lg:grid lg:grid-cols-2 gap-6 py-16 lg:items-center">
+        {/* Text panel */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
@@ -70,10 +77,10 @@ export function Hero() {
             </span>
           </h1>
           <p className="text-muted-foreground text-lg sm:text-xl max-w-2xl mx-auto lg:mx-0">
-            I build secure, scalable cloud architectures and AI-driven automation pipelines. 
+            I build secure, scalable cloud architectures and AI-driven automation pipelines.
             Bridging the gap between DevOps, Security, and Data Engineering.
           </p>
-          
+
           <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
             <Link
               href="#projects"
@@ -91,18 +98,15 @@ export function Hero() {
               <Download className="ml-2 h-4 w-4" />
             </Link>
           </div>
+
+          {/* ── Mobile-only: Globe card below buttons ── */}
+          <div className="block lg:hidden pt-2">
+            <Globe mode="card" />
+          </div>
         </motion.div>
 
-        {/* Globe Visualization */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.2 }}
-          className="relative flex items-center justify-center w-full max-w-[280px] sm:max-w-[400px] lg:max-w-[500px] xl:max-w-[600px] mx-auto lg:mx-0 mt-8 lg:mt-0 min-w-0"
-        >
-          <div className="absolute inset-0 bg-primary/20 blur-3xl rounded-full -z-10 transform scale-75" />
-          <Globe />
-        </motion.div>
+        {/* Right column spacer (desktop only — shows map through gradient) */}
+        <div className="hidden lg:block" />
       </div>
     </section>
   )

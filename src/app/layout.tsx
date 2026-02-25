@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -14,9 +14,60 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+// ── Update SITE_URL to your actual domain before deploying ────────────────────
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://sarveshmore.dev";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: [
+    { media: "(prefers-color-scheme: dark)",  color: "#061220" },
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+  ],
+};
+
 export const metadata: Metadata = {
-  title: "Sarvesh More | Cybersecurity & Cloud Engineer",
-  description: "Portfolio of Sarvesh More - Cybersecurity & Cloud Engineer specializing in secure systems, AI-driven analytics, and automation.",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "Sarvesh More | Cybersecurity & Cloud Engineer",
+    template: "%s | Sarvesh More",
+  },
+  description:
+    "Portfolio of Sarvesh More — Cybersecurity & Cloud Engineer specialising in secure systems, AI-driven analytics, and automation.",
+  keywords: [
+    "cybersecurity", "cloud engineer", "DevSecOps", "automation",
+    "portfolio", "Sarvesh More",
+  ],
+  authors: [{ name: "Sarvesh More", url: SITE_URL }],
+  creator: "Sarvesh More",
+  robots: { index: true, follow: true },
+  icons: {
+    icon: "/globe.svg",
+    shortcut: "/globe.svg",
+  },
+  openGraph: {
+    type: "website",
+    url: SITE_URL,
+    siteName: "Sarvesh More",
+    title: "Sarvesh More | Cybersecurity & Cloud Engineer",
+    description:
+      "Cybersecurity & Cloud Engineer — secure systems, AI-driven analytics, automation.",
+    images: [
+      {
+        url: "/og-image.png",   // add a 1200×630 png to /public when ready
+        width: 1200,
+        height: 630,
+        alt: "Sarvesh More – Cybersecurity & Cloud Engineer",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Sarvesh More | Cybersecurity & Cloud Engineer",
+    description:
+      "Cybersecurity & Cloud Engineer — secure systems, AI-driven analytics, automation.",
+    images: ["/og-image.png"],
+  },
 };
 
 export default function RootLayout({
